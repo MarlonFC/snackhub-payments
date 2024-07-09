@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+  snackhubpay-mongodb:
+    container_name: snackhubpay-mongodb
+    restart: always
+    image: 'mongo:latest'
+    environment:
+        - MONGO_INITDB_DATABASE=snackhubpay
+    ports:
+      - "27017"
+    networks:
+      - snackhubpay_network
+networks:
+  snackhubpay_network:
+    driver: bridge
+    name: snackhubpay_network
+volumes:
+  db:

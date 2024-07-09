@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+  snackhubpay-mongodb:
+    container_name: snackhubpay-mongodb
+    restart: always
+    image: 'mongo:6.0.13'
+    environment:
+      - MONGO_INITDB_DATABASE=snackhubpay
+    ports:
+      - "27017"
+    networks:
+      - snackhubpay_network
+
+  snackhub-payments-app:
+    container_name: snackhubpay-app
+    image: grupo60fiap2023/snackhubpay-app:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - snackhubpay-mongodb
+    networks:
+      - snackhubpay_network
+    environment:
+      - WAIT_HOSTS=snackhubpay-mongodb:27017
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+
+networks:
+  snackhubpay_network:
+    driver: bridge
+    name: snackhubpay_network
+volumes:
+  db:
